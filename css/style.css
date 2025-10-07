@@ -28,3 +28,14 @@ figure{margin:1rem 0;text-align:center}figcaption{font-size:.7rem;color:#8aa7bd}
 	main{grid-template-columns:repeat(3,1fr)}
 	#theory{grid-column:1 / -1}
 }
+
+/* Focus controls */
+.focus-btn{position:absolute;top:.5rem;right:.5rem;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:#1f2a35;border:1px solid #2c3f51;color:#cfe6f4;opacity:.9;z-index:1}
+.focus-btn span{font-size:14px;line-height:1}
+.focus-btn:hover{opacity:1;filter:brightness(1.1)}
+.focus-btn:focus{outline:2px solid #3da9ff;outline-offset:2px}
+
+/* When a section is focused on wide screens, make it span the full first row */
+@media (min-width:1100px){
+	section.focused{grid-column:1 / -1;order:-1}
+}

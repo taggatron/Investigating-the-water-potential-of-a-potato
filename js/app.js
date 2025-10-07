@@ -17,6 +17,7 @@ function init() {
   setupDilution();
   setupDataEntry();
   setupChart();
+  setupFocusControls();
   restoreSaved();
   qs('#app').hidden = false;
   qs('#loading').remove();
@@ -204,3 +205,26 @@ function restoreSaved() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
+
+function setupFocusControls() {
+  const container = qs('#app');
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.focus-btn');
+    if (!btn) return;
+    const section = btn.closest('section');
+    if (!section) return;
+    const already = section.classList.contains('focused');
+    // Clear others
+    container.querySelectorAll('section.focused').forEach(s=>s.classList.remove('focused'));
+    // Toggle current
+    if (!already) {
+      section.classList.add('focused');
+      btn.setAttribute('aria-label','Unfocus this panel');
+      btn.title = 'Unfocus';
+    } else {
+      section.classList.remove('focused');
+      btn.setAttribute('aria-label','Focus this panel');
+      btn.title = 'Focus';
+    }
+  });
+}

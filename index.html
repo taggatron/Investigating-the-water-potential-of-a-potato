@@ -13,6 +13,9 @@
   </header>
   <main id="app" hidden>
     <section id="dilution-section" aria-labelledby="dilution-title">
+      <button type="button" class="focus-btn" aria-label="Focus this panel" title="Focus">
+        <span aria-hidden="true">⤢</span>
+      </button>
       <h2 id="dilution-title">Serial Dilution Planner & Animation</h2>
       <form id="dilution-form" class="panel">
         <div class="row">
@@ -70,6 +73,9 @@
     </section>
 
     <section id="data-entry" aria-labelledby="data-title">
+      <button type="button" class="focus-btn" aria-label="Focus this panel" title="Focus">
+        <span aria-hidden="true">⤢</span>
+      </button>
       <h2 id="data-title">Mass Change Data</h2>
       <form id="data-form" class="panel small">
         <div class="row">
@@ -99,6 +105,9 @@
     </section>
 
     <section id="graph-section" aria-labelledby="graph-title">
+      <button type="button" class="focus-btn" aria-label="Focus this panel" title="Focus">
+        <span aria-hidden="true">⤢</span>
+      </button>
       <h2 id="graph-title">Graph: % Mass Change vs Sucrose Concentration</h2>
       <canvas id="resultChart" width="640" height="400" role="img" aria-label="Scatter plot of percentage mass change against sucrose concentration"></canvas>
       <p id="isotonicPoint" class="info"></p>
