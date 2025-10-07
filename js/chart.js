@@ -89,11 +89,15 @@ export class ResultChart {
     const [xmin,xmax]=this._range(this.data,'x');
     const [ymin,ymax]=this._range(this.data,'y');
     this._renderAxes(xmin,xmax,ymin,ymax);
-    // line through data (simple linear regression or monotonic connect?) we'll connect sorted points
+    // Smoothed best-fit line (LOESS) instead of dot-to-dot
     if (this.data.length>=2) {
-      ctx.strokeStyle='#2e88d6'; ctx.lineWidth=2; ctx.beginPath();
-      this.data.forEach((p,i)=>{ const c = this._dataToCanvas(p); if(i===0) ctx.moveTo(c.x,c.y); else ctx.lineTo(c.x,c.y); });
-      ctx.stroke();
+      const curve = this._loessCurvePoints(this.data, 0.6, 160); // alpha=0.6 bandwidth, 160 samples
+      if (curve.length>1) {
+        ctx.strokeStyle='#2e88d6'; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.lineCap='round';
+        ctx.beginPath();
+        curve.forEach((p,i)=>{ const c=this._dataToCanvas(p); if(i===0) ctx.moveTo(c.x,c.y); else ctx.lineTo(c.x,c.y); });
+        ctx.stroke();
+      }
     }
     // points
     this.data.forEach((p,i)=>{
@@ -114,6 +118,58 @@ export class ResultChart {
       ctx.fillStyle='#cfe6f4'; ctx.textAlign='left'; ctx.fillText(text, x+5, y+14);
     }
   }
+}
+
+// --- LOESS smoothing helpers ---
+// Returns sampled points {x,y} across [xmin,xmax] using locally weighted linear regression
+ResultChart.prototype._loessCurvePoints = function(points, bandwidth=0.6, samples=160) {
+  const n = points.length;
+  if (n<2) return [];
+  const data = points.slice().sort((a,b)=>a.x-b.x);
+  const xs = data.map(p=>p.x); const ys = data.map(p=>p.y);
+  const xmin = xs[0], xmax = xs[xs.length-1];
+  const result = [];
+  for (let i=0;i<samples;i++) {
+    const xq = xmin + (i/(samples-1))*(xmax-xmin);
+    const yq = _loessAt(xq, xs, ys, bandwidth);
+    if (Number.isFinite(yq)) result.push({x:xq,y:yq});
+  }
+  return result;
+};
+
+// Compute LOESS estimate at xq using tricube weights and linear local fit
+function _loessAt(xq, xs, ys, bandwidth) {
+  const n = xs.length;
+  const span = Math.max(2, Math.floor(bandwidth*n));
+  // Find nearest span points around xq
+  // Get indices sorted by distance to xq
+  const idx = Array.from({length:n}, (_,i)=>i).sort((i,j)=>Math.abs(xs[i]-xq)-Math.abs(xs[j]-xq));
+  const sel = idx.slice(0, span).sort((a,b)=>xs[a]-xs[b]);
+  const x0 = xs[sel[0]], xk = xs[sel[sel.length-1]];
+  const maxDist = Math.max(Math.abs(xq - x0), Math.abs(xq - xk)) || 1e-9;
+  // Weighted linear regression y = a + b x
+  let sw=0, swx=0, swy=0, swxx=0, swxy=0;
+  for (const i of sel) {
+    const d = Math.abs(xs[i]-xq) / maxDist;
+    const w = tricube(1 - Math.min(1, d));
+    const x = xs[i], y = ys[i];
+    sw += w; swx += w*x; swy += w*y; swxx += w*x*x; swxy += w*x*y;
+  }
+  const denom = sw*swxx - swx*swx;
+  if (Math.abs(denom) < 1e-12) {
+    // Fallback to weighted average if ill-conditioned
+    return sw ? swy/sw : NaN;
+  }
+  const b = (sw*swxy - swx*swy)/denom;
+  const a = (swy - b*swx)/sw;
+  return a + b*xq;
+}
+
+function tricube(t) {
+  // t in [0,1]
+  const tt = Math.max(0, Math.min(1, t));
+  const v = 1 - Math.pow(tt,3);
+  return Math.pow(v,3);
 }
 
 // Polyfill for roundRect for older browsers (if needed)
