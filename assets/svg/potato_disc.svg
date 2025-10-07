@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" role="img" aria-label="Potato cylinder">
+  <defs>
+    <radialGradient id="pot" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0%" stop-color="#f4d98b"/>
+      <stop offset="80%" stop-color="#c9a85e"/>
+      <stop offset="100%" stop-color="#b08f45"/>
+    </radialGradient>
+  </defs>
+  <circle cx="70" cy="70" r="55" fill="url(#pot)" stroke="#8a6a2e" stroke-width="5"/>
+  <g stroke="#9c7c3a" stroke-width="2" stroke-linecap="round">
+    <line x1="50" y1="40" x2="52" y2="42"/>
+    <line x1="85" y1="55" x2="87" y2="57"/>
+    <line x1="60" y1="80" x2="62" y2="82"/>
+    <line x1="95" y1="95" x2="97" y2="97"/>
+    <line x1="75" y1="35" x2="77" y2="37"/>
+  </g>
+  <text x="70" y="130" font-size="14" text-anchor="middle" fill="#c9aa64" font-family="system-ui">Potato disc</text>
+</svg>

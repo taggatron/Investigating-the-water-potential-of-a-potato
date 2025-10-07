@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 200" role="img" aria-label="Beaker">
+  <defs>
+    <linearGradient id="liq" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#8fd3ff"/>
+      <stop offset="100%" stop-color="#2b6fa8"/>
+    </linearGradient>
+  </defs>
+  <rect x="20" y="10" width="100" height="180" rx="8" ry="8" fill="none" stroke="#43657b" stroke-width="5"/>
+  <rect x="25" y="95" width="90" height="90" fill="url(#liq)" opacity="0.85" stroke="#2c5164" stroke-width="2"/>
+  <g stroke="#2d4a5b" stroke-width="1">
+    <line x1="25" x2="115" y1="60" y2="60"/>
+    <line x1="25" x2="115" y1="80" y2="80"/>
+    <line x1="25" x2="115" y1="100" y2="100"/>
+    <line x1="25" x2="115" y1="120" y2="120"/>
+    <line x1="25" x2="115" y1="140" y2="140"/>
+    <line x1="25" x2="115" y1="160" y2="160"/>
+  </g>
+  <text x="70" y="50" text-anchor="middle" font-size="14" fill="#a7c9de" font-family="system-ui">Sucrose</text>
+</svg>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PAG 8.1 Water Potential of Potato</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Investigating the Water Potential of Potato Tissue (OCR A Level Biology PAG 8.1)</h1>
+    <p class="subtitle">Interactive dilution, data capture, and analysis</p>
+  </header>
+  <main id="app" hidden>
+    <section id="dilution-section" aria-labelledby="dilution-title">
+      <h2 id="dilution-title">Serial Dilution Planner & Animation</h2>
+      <form id="dilution-form" class="panel">
+        <div class="row">
+          <label>Stock sucrose (mol dm⁻³)
+            <input type="number" step="0.01" min="0" id="stockConc" value="1.0" required>
+          </label>
+          <label>Target concentration
+            <input type="number" step="0.01" min="0" id="targetConc" value="0.20" required>
+          </label>
+          <label>Final volume (mL)
+            <input type="number" step="1" min="5" id="finalVol" value="20" required>
+          </label>
+          <label>Your water volume choice (mL)
+            <input type="number" step="0.1" min="0" id="userWaterVol" placeholder="e.g. 16" required>
+          </label>
+        </div>
+        <p class="info" id="finalVolDisplay">Total final volume required: <strong><span id="finalVolValue">20</span> mL</strong></p>
+        <div class="row">
+          <button type="submit">Check & Animate</button>
+          <button type="button" id="resetAnimation" class="secondary">Reset</button>
+        </div>
+        <p id="dilution-feedback" role="alert" aria-live="polite"></p>
+      </form>
+      <div id="animationCanvas" aria-label="Dilution animation" class="animation-area"></div>
+      <div id="seriesPanel" class="panel" aria-labelledby="series-title">
+        <h3 id="series-title">Batch Dilution Series & Potato Cylinder Animation</h3>
+        <div class="row">
+          <label>Series concentrations (mol dm⁻³)
+            <input type="text" id="seriesConcs" placeholder="e.g. 0,0.1,0.2,0.3,0.4" value="0,0.1,0.2,0.3,0.4,0.5">
+          </label>
+          <label>Initial mass per cylinder (g)
+            <input type="number" id="seriesInitialMass" step="0.01" min="0" value="2.50">
+          </label>
+        </div>
+        <div class="row">
+          <button type="button" id="generateSeries">Generate Data</button>
+          <button type="button" class="secondary" id="animateSeries">Animate Cylinders</button>
+          <label style="align-items:center;gap:.4rem;flex:0 0 auto">
+            <input type="checkbox" id="normalizeScaling"> Normalize scaling
+          </label>
+          <button type="button" class="secondary" id="animateSerial">Serial Transfer</button>
+        </div>
+        <p class="info" id="seriesFeedback"></p>
+        <div id="seriesAnimation" class="animation-area small" aria-label="Potato cylinders animation"></div>
+        <div id="seriesLegend" class="legend">
+          <span class="swatch turgid"></span> Higher water potential (gain mass, turgid)
+          <span class="swatch iso"></span> Near isotonic
+          <span class="swatch plasmolysed"></span> Lower water potential (lose mass)
+        </div>
+      </div>
+      <details class="explain">
+        <summary>How is the dilution calculated?</summary>
+        <p>We use C1V1 = C2V2. Stock concentration (C1) × volume of stock needed (V1) = target concentration (C2) × final volume (V2).</p>
+      </details>
+    </section>
+
+    <section id="data-entry" aria-labelledby="data-title">
+      <h2 id="data-title">Mass Change Data</h2>
+      <form id="data-form" class="panel small">
+        <div class="row">
+          <label>Concentration (mol dm⁻³)
+            <input type="number" step="0.05" min="0" id="dataConc" required>
+          </label>
+          <label>Initial mass (g)
+            <input type="number" step="0.01" min="0" id="initialMass" required>
+          </label>
+          <label>Final mass (g)
+            <input type="number" step="0.01" min="0" id="finalMass" required>
+          </label>
+        </div>
+        <div class="row">
+          <button type="submit">Add Result</button>
+          <button type="button" id="simulateBtn" class="secondary">Simulate Final Mass</button>
+          <button type="button" id="clearData" class="danger">Clear Data</button>
+        </div>
+      </form>
+      <table id="results-table" aria-describedby="results-caption">
+        <caption id="results-caption">Results: Mass change of potato cylinders</caption>
+        <thead>
+          <tr><th>Conc (mol dm⁻³)</th><th>Initial (g)</th><th>Final (g)</th><th>% Change</th><th></th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="graph-section" aria-labelledby="graph-title">
+      <h2 id="graph-title">Graph: % Mass Change vs Sucrose Concentration</h2>
+      <canvas id="resultChart" width="640" height="400" role="img" aria-label="Scatter plot of percentage mass change against sucrose concentration"></canvas>
+      <p id="isotonicPoint" class="info"></p>
+    </section>
+
+    <aside id="theory" aria-labelledby="theory-title">
+      <h2 id="theory-title">Theory & Guidance</h2>
+      <p>This activity supports OCR A Level Biology PAG 8.1 by allowing exploration of osmosis: the movement of water across selectively permeable membranes from higher to lower water potential.</p>
+      <ul>
+        <li>Prepare a range of sucrose concentrations using dilution.</li>
+        <li>Measure initial mass of potato cylinders.</li>
+        <li>Incubate in solutions, blot dry, re-measure final mass.</li>
+        <li>Plot % mass change against concentration; where the line crosses zero is the isotonic point.</li>
+      </ul>
+      <figure>
+        <img src="assets/svg/beaker.svg" alt="Beaker with sucrose solution" width="120">
+        <figcaption>Example apparatus</figcaption>
+      </figure>
+    </aside>
+  </main>
+  <div id="loading">Loading modules...</div>
+  <footer>
+    <p>Created for educational use. No external libraries required.</p>
+  </footer>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

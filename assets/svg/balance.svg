@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 140" role="img" aria-label="Top-pan balance">
+  <rect x="20" y="90" width="220" height="30" rx="6" fill="#2d4757" stroke="#1b2f3a" stroke-width="3"/>
+  <rect x="50" y="30" width="160" height="60" rx="6" fill="#597b91" stroke="#1b2f3a" stroke-width="3"/>
+  <rect x="60" y="40" width="120" height="40" rx="4" fill="#0e1d26" stroke="#385364"/>
+  <text x="120" y="65" font-size="18" text-anchor="middle" font-family="system-ui" fill="#8fe1b0">0.00 g</text>
+  <rect x="100" y="15" width="60" height="12" rx="4" fill="#597b91" stroke="#1b2f3a" stroke-width="2"/>
+  <text x="130" y="12" text-anchor="middle" font-size="10" fill="#cbdde8" font-family="system-ui">Balance</text>
+</svg>
